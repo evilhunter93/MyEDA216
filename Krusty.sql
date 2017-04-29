@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS ingredients;
 CREATE TABLE customers (
 	id varchar(20),
 	address varchar(20),
-	primary key (id, address)
+	primary key (id)
 );
 
 CREATE TABLE orders (
@@ -58,8 +58,8 @@ CREATE TABLE storage (
 	unit varchar(5),
 	amount integer check(amount > 0),
 	last_date date,
-	primary key(name)
-	
+	primary key(name),
+	foreign key(name) references ingredients(name)
 );
 
 BEGIN TRANSACTION;
@@ -74,8 +74,8 @@ INSERT INTO customers (id, address) VALUES
 ('Gästkakor AB','Hässleholm'),
 ('Skånekakor AB','Perstorp');
 
-INSERT INTO orders (id, amount, delivery_date, customer_id, product_name) VALUES
-(
+INSERT INTO orders (amount, delivery_date, customer_id, product_name) VALUES
+(1, '2017-04-30', 'Finkakor AB', Berliner);
 
 INSERT INTO receipts (name) VALUES
 ('Nut ring'),
@@ -124,3 +124,30 @@ INSERT INTO locations(name) VALUES
 ('On the road'),
 ('N/A');
 
+INSERT INTO pallets(product_name, location, production_date, production_time) VALUES
+('Berliner', 'On the road', '2017-04-30', '14:30');
+
+INSERT INTO storage(name, unit, amount, last_date) VALUES
+('Flour', 'g', 20000, '2017-04-30'),
+('Butter', 'g', 20000, '2017-04-30'),
+('Icing sugar', 'g', 20000, '2017-04-30'),
+('Roasted, chopped nuts', 'g', 20000, '2017-04-30'),
+('Fine-ground nuts', 'g', 20000, '2017-04-30'),
+('Ground, roasted nuts', 'g', 20000, '2017-04-30'),
+('Bread crumbs', 'g', 20000, '2017-04-30'),
+('Sugar', 'g', 20000, '2017-04-30'),
+('Egg whites', 'dl', 20000, '2017-04-30'),
+('Chocolate', 'g', 20000, '2017-04-30'),
+('Marzipan', 'g', 20000, '2017-04-30'),
+('Eggs', 'g', 20000, '2017-04-30'),
+('Potato starch', 'g', 20000, '2017-04-30'),
+('Wheat flour', 'g', 20000, '2017-04-30'),
+('Sodium bicarbonate', 'g', 20000, '2017-04-30'),
+('Vanilla', 'g', 20000, '2017-04-30'),
+('Chopped almonds', 'g', 20000, '2017-04-30'),
+('Cinnamon', 'g', 20000, '2017-04-30'),
+('Vanilla sugar', 'g', 20000, '2017-04-30');
+
+END TRANSACTION;
+
+PRAGMA foreign_key = on;
