@@ -1,0 +1,25 @@
+package krustyKookies;
+import javax.swing.*;
+import javax.swing.event.*;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.lang.reflect.Field;
+
+public class ProductionPane extends BasicPane{
+
+	private static final long serialVersionUID = 1;
+	private JLabel currentUser;
+	private DefaultListModel<String> cookieListModel;
+	private JList<String> cookieList;
+	private JTextField[] fields;
+	private static final int ID = 0;
+	private static final int cookieType = 1;
+	private static final int date = 2;
+
+	public ProductionPane(Database db) {
+		super(db);
+	}
+
+
+}

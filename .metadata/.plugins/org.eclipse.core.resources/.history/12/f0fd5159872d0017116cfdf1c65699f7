@@ -1,0 +1,22 @@
+package krustyKookies;
+import javax.swing.*;
+import javax.swing.event.*;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.lang.reflect.Field;
+
+public class PalletPane extends BasicPane{
+
+	private static final long serialVersionUID = 1;
+	private JLabel currentUser;
+	private DefaultListModel<String> cookieListModel;
+	private JList<String> cookieList;
+	
+
+	public PalletPane(Database db) {
+		super(db);
+	}
+
+
+}

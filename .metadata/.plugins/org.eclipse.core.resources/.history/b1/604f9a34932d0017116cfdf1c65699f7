@@ -1,0 +1,50 @@
+package krustyKookies;
+
+import javax.swing.*;
+import javax.swing.event.*;
+
+import krustyKookies.BookingPane.NameSelectionListener;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.lang.reflect.Field;
+
+public class ProductionPane extends BasicPane {
+
+	private static final long serialVersionUID = 1;
+	private JLabel currentUser;
+	private DefaultListModel<String> cookieListModel;
+	private JList<String> cookieList;
+	private JTextField[] fields;
+	private static final int ID = 0;
+	private static final int COOKIETYPE = 1;
+	private static final int DATE = 2;
+	private static final int NBR_FIELDS = 3;
+
+	public ProductionPane(Database db) {
+		super(db);
+	}
+
+	public JComponent createTopPanel() {
+		cookieListModel = new DefaultListModel<String>();
+
+		cookieList = new JList<String>();
+		cookieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cookieList.setPrototypeCellValue("123456789012");
+		cookieList.addListSelectionListener(new CookieSelectionListener());
+		JScrollPane p1 = new JScrollPane(cookieList);
+
+		JPanel p = new JPanel();
+		return p;
+	}
+
+	class CookieSelectionListener implements ListSelectionListener()
+	{
+
+		@Override
+		public void valueChanged(ListSelectionEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+	}
+}}
