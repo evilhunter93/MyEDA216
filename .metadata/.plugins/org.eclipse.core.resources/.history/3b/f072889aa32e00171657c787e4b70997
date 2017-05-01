@@ -1,0 +1,65 @@
+package krustyKookies;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JTextField;
+
+public class BlockingPane extends BasicPane {
+	private static final long serialVersionUID = 1;
+
+	/**
+	 * A label showing the name of the current user.
+	 */
+	private JLabel currentUserNameLabel;
+
+	/**
+	 * The list model for the movie name list.
+	 */
+	private DefaultListModel<String> nameListModel;
+
+	/**
+	 * The movie name list.
+	 */
+	private JList<String> nameList;
+
+	/**
+	 * The list model for the performance date list.
+	 */
+	private DefaultListModel<String> dateListModel;
+
+	/**
+	 * The performance date list.
+	 */
+	private JList<String> dateList;
+
+	/**
+	 * The text fields where the movie data is shown.
+	 */
+	private JTextField[] fields;
+
+	/**
+	 * The number of the movie name field.
+	 */
+	private static final int MOVIE_NAME = 0;
+
+	/**
+	 * The number of the performance date field.
+	 */
+	private static final int PERF_DATE = 1;
+
+	/**
+	 * The number of the movie theater field.
+	 */
+	private static final int THEATER_NAME = 2;
+
+	/**
+	 * The number of the 'number of free seats' field.
+	 */
+	private static final int FREE_SEATS = 3;
+
+	/**
+	 * The total number of fields.
+	 */
+	private static final int NBR_FIELDS = 4;
+}

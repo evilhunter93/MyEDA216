@@ -1,8 +1,5 @@
 package krustyKookies;
 
-import java.sql.Date;
-import java.sql.Time;
-
 public class Pallet {
 	private int id;
 	private String cookieType;
@@ -30,12 +27,12 @@ public class Pallet {
 		// TODO Auto-generated method stub
 		return location;
 	}
-	public String getDate() {
+	public Date getDate() {
 		// TODO Auto-generated method stub
-		return date.toString();
+		return date;
 	}
-	public String getTime() {
+	public Time getTime() {
 		// TODO Auto-generated method stub
-		return time.toString();
+		return time;
 	}
 }

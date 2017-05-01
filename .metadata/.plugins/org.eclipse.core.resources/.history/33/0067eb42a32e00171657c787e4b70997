@@ -61,8 +61,8 @@ public class ProductionPane extends BasicPane {
 		JPanel p1 = new JPanel();
 		p1.setLayout(new FlowLayout(FlowLayout.LEFT));
 		p1.add(new JLabel("Current user: "));
-		currentUser = new JLabel("");
-		p1.add(currentUser);
+		currentUserNameLabel = new JLabel("");
+		p1.add(currentUserNameLabel);
 
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));

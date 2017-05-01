@@ -1,7 +1,6 @@
 package krustyKookies;
 
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 public class NewDatabase {
@@ -71,26 +70,16 @@ public class NewDatabase {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Pallet p = null;
-		// Convert it to java.sql.Date
-		Date date = new Date(System.currentTimeMillis());
-		Time time = new Time(System.currentTimeMillis());
+		
 		try{
 			String query = "INSERT INTO PALLETS (cookieType, location, date, time)" 
 					+ "VALUES (?, ?, ?, ?)";
-			stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(query);
 			stmt.setString(1, cookieType);
 			stmt.setString(2, "Deep freeze storage");
-			stmt.setDate(3, date);
-			stmt.setTime(4, time);
-			stmt.executeUpdate();
-			rs = stmt.getGeneratedKeys();
-			if(rs.next()){
-				p = new Pallet(rs.getInt("ID"), cookieType, "Deep freeze storage", date, time);
-			}
+			stmt.setString(3, "now");
 		}catch(SQLException e){
-			e.printStackTrace();
-		} finally{
-			closeStatement(stmt);
+			
 		}
 		
 		return p;

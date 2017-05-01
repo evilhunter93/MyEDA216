@@ -41,35 +41,6 @@ public class ProductionPane extends BasicPane {
 		p.add(p1);
 		return p;
 	}
-	
-	public JComponent createRightPanel(){
-		String[] texts = new String[NBR_FIELDS];
-		texts[ID] = "ID";
-		texts[COOKIETYPE] = "Cookie-type";
-		texts[LOCATION] = "Location";
-		texts[DATE] = "Production date";
-		texts[TIME] = "Production time";
-
-		fields = new JTextField[NBR_FIELDS];
-		for (int i = 0; i < fields.length; i++) {
-			fields[i] = new JTextField(20);
-			fields[i].setEditable(false);
-		}
-
-		JPanel input = new InputPanel(texts, fields);
-
-		JPanel p1 = new JPanel();
-		p1.setLayout(new FlowLayout(FlowLayout.LEFT));
-		p1.add(new JLabel("Current user: "));
-		currentUser = new JLabel("");
-		p1.add(currentUser);
-
-		JPanel p = new JPanel();
-		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-		p.add(p1);
-		p.add(input);
-		return p;
-	}
 
 	class CookieSelectionListener implements ListSelectionListener
 	{

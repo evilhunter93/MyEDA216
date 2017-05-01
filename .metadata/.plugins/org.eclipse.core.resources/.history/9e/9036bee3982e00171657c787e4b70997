@@ -88,9 +88,7 @@ public class NewDatabase {
 				p = new Pallet(rs.getInt("ID"), cookieType, "Deep freeze storage", date, time);
 			}
 		}catch(SQLException e){
-			e.printStackTrace();
-		} finally{
-			closeStatement(stmt);
+			
 		}
 		
 		return p;

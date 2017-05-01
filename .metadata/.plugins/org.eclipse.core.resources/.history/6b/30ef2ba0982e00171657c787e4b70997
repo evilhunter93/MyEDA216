@@ -85,12 +85,10 @@ public class NewDatabase {
 			stmt.executeUpdate();
 			rs = stmt.getGeneratedKeys();
 			if(rs.next()){
-				p = new Pallet(rs.getInt("ID"), cookieType, "Deep freeze storage", date, time);
+				p = new Pallet(rs.getInt("ID"), "Deep freeze storage", date, time);
 			}
 		}catch(SQLException e){
-			e.printStackTrace();
-		} finally{
-			closeStatement(stmt);
+			
 		}
 		
 		return p;
