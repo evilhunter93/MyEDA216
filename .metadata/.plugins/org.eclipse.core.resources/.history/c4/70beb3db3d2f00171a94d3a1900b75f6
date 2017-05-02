@@ -81,7 +81,7 @@ public class ProductionPane extends BasicPane {
 	public void entryActions() {
 		clearMessage();
 		currentUser.setText(CurrentUser.instance().getCurrentUserId());
-		fillCookieList();
+		fillCookieeList();
 		clearFields();
 	}
 	

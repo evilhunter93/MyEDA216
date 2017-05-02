@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -23,14 +22,6 @@ public class BlockingPane extends BasicPane {
 	private JList<String> cookieList;
 	private JTextField[] fields;
 	
-	private JComboBox bYearList;
-	private JComboBox bMonthList;
-	private JComboBox bDayList;
-	
-	private JComboBox eYearList;
-	private JComboBox eMonthList;
-	private JComboBox eDayList;
-	
 	private static final int ID = 0;
 	private static final int COOKIETYPE = 1;
 	private static final int LOCATION = 2;
@@ -43,7 +34,7 @@ public class BlockingPane extends BasicPane {
 	}
 	
 	public JComponent createTopPanel(){
-		
+		String[] yearStrings = ("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017");
 	}
 	
 	public JComponent createRightPanel(){
@@ -81,31 +72,10 @@ public class BlockingPane extends BasicPane {
 		return new ButtonAndMessagePanel(buttons, messageLabel, new ActionHandler());
 	}
 	
-	private void comboBoxSetup(){
-		String[] yearStrings = {"None chosen", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017"};
-		bYearList = new JComboBox(yearStrings);
-		bYearList.setSelectedIndex(0);
-		bYearList.addActionListener(new BYearActionHandler());
-		
-		String[] monthStrings = {"None chosen", "January", "February", "March", "April", "May",
-				"June", "July", "August", "September", "October", "November", "December"};
-		bMonthList = new JComboBox(monthStrings);
-		bMonthList.setSelectedIndex(0);
-		bMonthList.addActionListener(new BMonthActionHandler());
-		
-		eYearList = new JComboBox(yearStrings);
-		eYearList.setSelectedIndex(0);
-		eYearList.addActionListener(new EYearActionHandler());
-		
-		eMonthList = new JComboBox(monthStrings);
-		eMonthList.setSelectedIndex(0);
-		eMonthList.addActionListener(new EMonthActionHandler());
-	}
-	
 	class ActionHandler implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			displayMessage("");
-			if (bYearList.getSelectedIndex()==0 || dateList.isSelectionEmpty()) {
+			if (nameList.isSelectionEmpty() || dateList.isSelectionEmpty()) {
 				return;
 			}
 			if (!CurrentUser.instance().isLoggedIn()) {
@@ -124,14 +94,5 @@ public class BlockingPane extends BasicPane {
 			}
 
 		}
-	}
-	
-	class BYearActionHandler implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-		}
-		
 	}
 }

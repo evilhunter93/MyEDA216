@@ -102,10 +102,10 @@ public class NewDatabase {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
-			String query = "SELECT distinct name FROM recipes";
+			String query = "SELECT distinct cookie FROM recipes";
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next())
-				list.addElement(rs.getString("name"));
+				list.addElement(rs.getString("cookie"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

@@ -85,27 +85,27 @@ public class BlockingPane extends BasicPane {
 		String[] yearStrings = {"None chosen", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017"};
 		bYearList = new JComboBox(yearStrings);
 		bYearList.setSelectedIndex(0);
-		bYearList.addActionListener(new BYearActionHandler());
+		bYearList.addActionListener(new BYearActionhandler());
 		
 		String[] monthStrings = {"None chosen", "January", "February", "March", "April", "May",
 				"June", "July", "August", "September", "October", "November", "December"};
 		bMonthList = new JComboBox(monthStrings);
 		bMonthList.setSelectedIndex(0);
-		bMonthList.addActionListener(new BMonthActionHandler());
+		bMonthList.addActionListener(new BMonthActionhandler());
 		
 		eYearList = new JComboBox(yearStrings);
 		eYearList.setSelectedIndex(0);
-		eYearList.addActionListener(new EYearActionHandler());
+		eYearList.addActionListener(new EYearActionhandler());
 		
 		eMonthList = new JComboBox(monthStrings);
 		eMonthList.setSelectedIndex(0);
-		eMonthList.addActionListener(new EMonthActionHandler());
+		eMonthList.addActionListener(new EMonthActionhandler());
 	}
 	
 	class ActionHandler implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			displayMessage("");
-			if (bYearList.getSelectedIndex()==0 || dateList.isSelectionEmpty()) {
+			if (yearList.getSelectedIndex()==0 || dateList.isSelectionEmpty()) {
 				return;
 			}
 			if (!CurrentUser.instance().isLoggedIn()) {

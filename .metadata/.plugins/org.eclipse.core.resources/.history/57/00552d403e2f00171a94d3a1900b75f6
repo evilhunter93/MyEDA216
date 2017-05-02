@@ -4,8 +4,6 @@ import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
-import javax.swing.DefaultListModel;
-
 public class NewDatabase {
 
 	private Connection conn;
@@ -96,21 +94,6 @@ public class NewDatabase {
 		}
 		
 		return p;
-	}
-	
-	public void getCookies(DefaultListModel<String> list){
-		Statement stmt = null;
-		try {
-			stmt = conn.createStatement();
-			String query = "SELECT distinct name FROM recipes";
-			ResultSet rs = stmt.executeQuery(query);
-			while (rs.next())
-				list.addElement(rs.getString("name"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeStatement(stmt);
-		}
 	}
 	
 	private ResultSet executeQuery(Statement stmt, String query) throws SQLException {
