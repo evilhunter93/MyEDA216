@@ -79,7 +79,7 @@ public class BookingPane extends BasicPane {
 	 * @param db
 	 *            The database object.
 	 */
-	public BookingPane(Database db) {
+	public BookingPane(OldDatabase db) {
 		super(db);
 	}
 

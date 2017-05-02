@@ -92,6 +92,25 @@ public class BlockingPane extends BasicPane {
 		return new ButtonAndMessagePanel(buttons, messageLabel, new ActionHandler());
 	}
 	
+	public void entryActions() {
+		clearMessage();
+		currentUser.setText(CurrentUser.instance().getCurrentUserId());
+		fillCookieList();
+		clearFields();
+	}
+	
+	private void fillCookieList(){
+		cookieListModel.removeAllElements();
+		/* --- insert own code here --- */
+		db.getCookies(cookieListModel);
+	}
+	
+	private void clearFields(){
+		for (int i = 0; i < fields.length; i++) {
+			fields[i].setText("");
+		}
+	}
+	
 	class CookieSelectionListener implements ListSelectionListener
 	{
 
