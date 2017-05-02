@@ -22,8 +22,7 @@ public class ProductionPane extends BasicPane {
 	private static final int COOKIETYPE = 1;
 	private static final int LOCATION = 2;
 	private static final int DATE = 3;
-	private static final int TIME = 4;
-	private static final int NBR_FIELDS = 5;
+	private static final int NBR_FIELDS = 4;
 	
 	public ProductionPane(Database db) {
 		super(db);
@@ -49,7 +48,6 @@ public class ProductionPane extends BasicPane {
 		texts[COOKIETYPE] = "Cookie-type";
 		texts[LOCATION] = "Location";
 		texts[DATE] = "Production date";
-		texts[TIME] = "Production time";
 
 		fields = new JTextField[NBR_FIELDS];
 		for (int i = 0; i < fields.length; i++) {
@@ -135,7 +133,6 @@ public class ProductionPane extends BasicPane {
 			fields[1].setText(pallet.getCookieType());
 			fields[2].setText(pallet.getLocation());
 			fields[3].setText(pallet.getDate());
-			fields[4].setText(pallet.getTime());
 		}
 	}
 }

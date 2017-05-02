@@ -8,7 +8,7 @@ package krustyKookies;
 public class MovieBooking {
 
     public static void main(String[] args) {
-        Database db = new Database();
-        new MovieGUI(db);
+        OldDatabase db = new OldDatabase();
+        new ProjectGUI(db);
     }
 }

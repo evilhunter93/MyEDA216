@@ -8,14 +8,12 @@ public class Pallet {
 	private String cookieType;
 	private String location;
 	private Date date;
-	private Time time;
 	
-	public Pallet(int id, String cookieType, String location, Date date, Time time){
+	public Pallet(int id, String cookieType, String location, Date date){
 		this.id = id;
 		this.cookieType = cookieType;
 		this.location = location;
 		this.date = date;
-		this.time = time;
 	}
 
 	public int getID() {
@@ -33,9 +31,5 @@ public class Pallet {
 	public String getDate() {
 		// TODO Auto-generated method stub
 		return date.toString();
-	}
-	public String getTime() {
-		// TODO Auto-generated method stub
-		return time.toString();
 	}
 }
