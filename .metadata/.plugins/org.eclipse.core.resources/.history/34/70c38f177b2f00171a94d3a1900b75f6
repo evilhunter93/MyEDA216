@@ -187,12 +187,7 @@ public class PalletSearchPane extends BasicPane {
 				return;
 			}
 			int id = idList.getSelectedValue();
-			Pallet pallet = db.getPallet(id);
-			fields[0].setText(Integer.toString(pallet.getID()));
-			fields[1].setText(pallet.getCookieType());
-			fields[2].setText(pallet.getLocation());
-			fields[3].setText(pallet.getDate());
-			fields[4].setText(pallet.getTime());
+			Pallet p = db.getPallet();
 		}
 	}
 }

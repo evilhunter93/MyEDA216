@@ -126,9 +126,9 @@ public class BlockingPane extends BasicPane {
 					Integer.parseInt(eDate[2])).getTime();
 			java.sql.Date startDate = new java.sql.Date(begDate.getTime());
 			java.sql.Date endingDate = new java.sql.Date(endDate.getTime());
-			String cookieType = cookieList.getSelectedValue();
+			String movieName = cookieList.getSelectedValue();
 			/* --- insert own code here --- */
-			db.blockPallets(cookieType, startDate, endingDate);
+			
 		}
 	}
 }

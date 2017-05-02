@@ -3,8 +3,6 @@ package krustyKookies;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -28,48 +26,19 @@ public class BlockingPane extends BasicPane {
 	private JLabel currentUser;
 	private DefaultListModel<String> cookieListModel;
 	private JList<String> cookieList;
-	private DefaultListModel<String> idListModel;
-	private JList<String> idList;
+	private DefaultListModel<String> dateListModel;
+	private JList<String> dateList;
 	private JTextField[] fields;
-	
-	private static final int BDATE = 0;
-	private static final int EDATE = 1;
-	private static final int NBR_FIELDS = 2;
-	//private static final int ID = 0;
-	//private static final int COOKIETYPE = 1;
-	//private static final int LOCATION = 2;
-	//private static final int DATE = 3;
-	//private static final int TIME = 4;
-	//private static final int NBR_FIELDS = 5;
+		
+	private static final int ID = 0;
+	private static final int COOKIETYPE = 1;
+	private static final int LOCATION = 2;
+	private static final int DATE = 3;
+	private static final int TIME = 4;
+	private static final int NBR_FIELDS = 5;
 	
 	public BlockingPane(Database db) {
 		super(db);
-	}
-	
-	public JComponent createTopPanel(){
-		String[] texts = new String[NBR_FIELDS];
-		texts[BDATE] = "Starting date";
-		texts[EDATE] = "Ending date";
-		
-		fields = new JTextField[NBR_FIELDS];
-		for (int i = 0; i < fields.length; i++) {
-			fields[i] = new JTextField(20);
-			fields[i].setEditable(true);
-		}
-		
-		JPanel input = new InputPanel(texts, fields);
-		
-		JPanel p1 = new JPanel();
-		p1.setLayout(new FlowLayout(FlowLayout.LEFT));
-		p1.add(new JLabel("Current user: "));
-		currentUser = new JLabel("");
-		p1.add(currentUser);
-
-		JPanel p = new JPanel();
-		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-		p.add(p1);
-		p.add(input);
-		return p;
 	}
 	
 	public JComponent createLeftPanel(){
@@ -83,6 +52,37 @@ public class BlockingPane extends BasicPane {
 
 		JPanel p = new JPanel();
 		p.add(p1);
+		return p;
+	}
+	
+	
+	
+	public JComponent createRightPanel(){
+		String[] texts = new String[NBR_FIELDS];
+		texts[ID] = "ID";
+		texts[COOKIETYPE] = "Cookie-type";
+		texts[LOCATION] = "Location";
+		texts[DATE] = "Production date";
+		texts[TIME] = "Production time";
+
+		fields = new JTextField[NBR_FIELDS];
+		for (int i = 0; i < fields.length; i++) {
+			fields[i] = new JTextField(20);
+			fields[i].setEditable(false);
+		}
+
+		JPanel input = new InputPanel(texts, fields);
+
+		JPanel p1 = new JPanel();
+		p1.setLayout(new FlowLayout(FlowLayout.LEFT));
+		p1.add(new JLabel("Current user: "));
+		currentUser = new JLabel("");
+		p1.add(currentUser);
+
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.add(p1);
+		p.add(input);
 		return p;
 	}
 	
@@ -108,27 +108,24 @@ public class BlockingPane extends BasicPane {
 	class ActionHandler implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			displayMessage("");
-			if (cookieList.isSelectionEmpty()) {
+			if (bYearList.getSelectedIndex()==0 || dateList.isSelectionEmpty()) {
 				return;
 			}
 			if (!CurrentUser.instance().isLoggedIn()) {
 				displayMessage("Must login first");
 				return;
 			}
-			String[] bDate = fields[BDATE].toString().split(" ");
-			String[] eDate = fields[EDATE].toString().split(" ");
-			if(bDate == null || bDate.length != 3 || eDate == null || eDate.length !=3){
-				return;
-			}
-			Date begDate = new GregorianCalendar(Integer.parseInt(bDate[0])-1900, Integer.parseInt(bDate[1]),
-					Integer.parseInt(bDate[2])).getTime();
-			Date endDate = new GregorianCalendar(Integer.parseInt(eDate[0])-1900, Integer.parseInt(eDate[1]),
-					Integer.parseInt(eDate[2])).getTime();
-			java.sql.Date startDate = new java.sql.Date(begDate.getTime());
-			java.sql.Date endingDate = new java.sql.Date(endDate.getTime());
-			String cookieType = cookieList.getSelectedValue();
+			String movieName = nameList.getSelectedValue();
+			String date = dateList.getSelectedValue();
 			/* --- insert own code here --- */
-			db.blockPallets(cookieType, startDate, endingDate);
+
+			int seats = db.bookTicket(movieName, date, CurrentUser.instance().getCurrentUserId());
+			fields[3].setText(Integer.toString(seats));
+
+			if (seats == 0) {
+				displayMessage("No seats left");
+			}
+
 		}
 	}
 }

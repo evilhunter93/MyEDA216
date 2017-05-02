@@ -108,6 +108,10 @@ public class BlockingPane extends BasicPane {
 	class ActionHandler implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			displayMessage("");
+			String[] bDate = fields[BDATE].toString().split(" ");
+			String[] eDate = fields[EDATE].toString().split(" ");
+			Date begDate = new GregorianCalendar(Integer.parseInt(bDate[0])-1900, Integer.parseInt(bDate[1]),
+					Integer.parseInt(bDate[2])).getTime();
 			if (cookieList.isSelectionEmpty()) {
 				return;
 			}
@@ -115,20 +119,9 @@ public class BlockingPane extends BasicPane {
 				displayMessage("Must login first");
 				return;
 			}
-			String[] bDate = fields[BDATE].toString().split(" ");
-			String[] eDate = fields[EDATE].toString().split(" ");
-			if(bDate == null || bDate.length != 3 || eDate == null || eDate.length !=3){
-				return;
-			}
-			Date begDate = new GregorianCalendar(Integer.parseInt(bDate[0])-1900, Integer.parseInt(bDate[1]),
-					Integer.parseInt(bDate[2])).getTime();
-			Date endDate = new GregorianCalendar(Integer.parseInt(eDate[0])-1900, Integer.parseInt(eDate[1]),
-					Integer.parseInt(eDate[2])).getTime();
-			java.sql.Date startDate = new java.sql.Date(begDate.getTime());
-			java.sql.Date endingDate = new java.sql.Date(endDate.getTime());
-			String cookieType = cookieList.getSelectedValue();
+			String movieName = cookieList.getSelectedValue();
 			/* --- insert own code here --- */
-			db.blockPallets(cookieType, startDate, endingDate);
+			
 		}
 	}
 }

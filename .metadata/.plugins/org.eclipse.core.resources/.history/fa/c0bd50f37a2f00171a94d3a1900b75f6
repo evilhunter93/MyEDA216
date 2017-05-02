@@ -25,8 +25,8 @@ public class PalletSearchPane extends BasicPane {
 	private JLabel currentUser;
 	private DefaultListModel<String> cookieListModel;
 	private JList<String> cookieList;
-	private DefaultListModel<Integer> idListModel;
-	private JList<Integer> idList;
+	private DefaultListModel<String> idListModel;
+	private JList<String> idList;
 	private JTextField[] fields;
 	private JTextField[] dateFields;
 
@@ -54,11 +54,11 @@ public class PalletSearchPane extends BasicPane {
 		cookieList.addListSelectionListener(new CookieSelectionListener());
 		JScrollPane p1 = new JScrollPane(cookieList);
 
-		idListModel = new DefaultListModel<Integer>();
+		idListModel = new DefaultListModel<String>();
 
-		idList = new JList<Integer>(idListModel);
+		idList = new JList<String>(idListModel);
 		idList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		idList.setPrototypeCellValue(123456);
+		idList.setPrototypeCellValue("123456789012");
 		idList.addListSelectionListener(new IdSelectionListener());
 		JScrollPane p2 = new JScrollPane(idList);
 
@@ -182,17 +182,6 @@ public class PalletSearchPane extends BasicPane {
 			if(idList.isSelectionEmpty()){
 				return;
 			}
-			if (!CurrentUser.instance().isLoggedIn()) {
-				displayMessage("Must login first");
-				return;
-			}
-			int id = idList.getSelectedValue();
-			Pallet pallet = db.getPallet(id);
-			fields[0].setText(Integer.toString(pallet.getID()));
-			fields[1].setText(pallet.getCookieType());
-			fields[2].setText(pallet.getLocation());
-			fields[3].setText(pallet.getDate());
-			fields[4].setText(pallet.getTime());
 		}
 	}
 }

@@ -1,0 +1,60 @@
+package krustyKookies;
+
+import java.awt.GridLayout;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+
+import krustyKookies.BookingPane.DateSelectionListener;
+import krustyKookies.BookingPane.NameSelectionListener;
+
+public class PalletSearchPane extends BasicPane{
+	private static final long serialVersionUID = 1;
+	private JLabel currentUser;
+	private DefaultListModel<String> cookieListModel;
+	private JList<String> cookieList;
+	private DefaultListModel<String> idListModel;
+	private JList<String> idList;
+	private JTextField[] fields;
+	
+	private static final int ID = 0;
+	private static final int COOKIETYPE = 1;
+	private static final int LOCATION = 2;
+	private static final int DATE = 3;
+	private static final int TIME = 4;
+	private static final int NBR_FIELDS = 5;
+	
+	public PalletSearchPane(Database db){
+		super(db);
+	}
+	
+	public JComponent createLeftPanel() {
+		cookieListModel = new DefaultListModel<String>();
+
+		cookieList = new JList<String>(cookieListModel);
+		cookieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cookieList.setPrototypeCellValue("123456789012");
+		cookieList.addListSelectionListener(new NameSelectionListener());
+		JScrollPane p1 = new JScrollPane(cookieList);
+
+		idListModel = new DefaultListModel<String>();
+
+		idList = new JList<String>(idListModel);
+		idList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		idList.setPrototypeCellValue("123456789012");
+		idList.addListSelectionListener(new DateSelectionListener());
+		JScrollPane p2 = new JScrollPane(idList);
+
+		JPanel p = new JPanel();
+		p.setLayout(new GridLayout(1, 2));
+		p.add(p1);
+		p.add(p2);
+		return p;
+	}
+}
