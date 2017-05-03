@@ -138,25 +138,25 @@ INSERT INTO pallets(product_name, location, production_timestamp) VALUES
 ('Berliner', 'On the road', '2017-04-30 14:30:22');
 
 INSERT INTO storage(name, unit, amount, last_date) VALUES
-('Flour', 'g', 20000, '2017-04-30'),
-('Butter', 'g', 20000, '2017-04-30'),
-('Icing sugar', 'g', 20000, '2017-04-30'),
-('Roasted, chopped nuts', 'g', 20000, '2017-04-30'),
-('Fine-ground nuts', 'g', 20000, '2017-04-30'),
-('Ground, roasted nuts', 'g', 20000, '2017-04-30'),
-('Bread crumbs', 'g', 20000, '2017-04-30'),
-('Sugar', 'g', 20000, '2017-04-30'),
-('Egg whites', 'dl', 20000, '2017-04-30'),
-('Chocolate', 'g', 20000, '2017-04-30'),
-('Marzipan', 'g', 20000, '2017-04-30'),
-('Eggs', 'g', 20000, '2017-04-30'),
-('Potato starch', 'g', 20000, '2017-04-30'),
-('Wheat flour', 'g', 20000, '2017-04-30'),
-('Sodium bicarbonate', 'g', 20000, '2017-04-30'),
-('Vanilla', 'g', 20000, '2017-04-30'),
-('Chopped almonds', 'g', 20000, '2017-04-30'),
-('Cinnamon', 'g', 20000, '2017-04-30'),
-('Vanilla sugar', 'g', 20000, '2017-04-30');
+('Flour', 'g', 2000000, '2017-04-30'),
+('Butter', 'g', 2000000, '2017-04-30'),
+('Icing sugar', 'g', 2000000, '2017-04-30'),
+('Roasted, chopped nuts', 'g', 2000000, '2017-04-30'),
+('Fine-ground nuts', 'g', 2000000, '2017-04-30'),
+('Ground, roasted nuts', 'g', 2000000, '2017-04-30'),
+('Bread crumbs', 'g', 2000000, '2017-04-30'),
+('Sugar', 'g', 2000000, '2017-04-30'),
+('Egg whites', 'dl', 2000000, '2017-04-30'),
+('Chocolate', 'g', 2000000, '2017-04-30'),
+('Marzipan', 'g', 2000000, '2017-04-30'),
+('Eggs', 'g', 2000000, '2017-04-30'),
+('Potato starch', 'g', 2000000, '2017-04-30'),
+('Wheat flour', 'g', 2000000, '2017-04-30'),
+('Sodium bicarbonate', 'g', 2000000, '2017-04-30'),
+('Vanilla', 'g', 2000000, '2017-04-30'),
+('Chopped almonds', 'g', 2000000, '2017-04-30'),
+('Cinnamon', 'g', 2000000, '2017-04-30'),
+('Vanilla sugar', 'g', 2000000, '2017-04-30');
 
 END TRANSACTION;
 

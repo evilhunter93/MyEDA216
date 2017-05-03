@@ -78,34 +78,23 @@ public class Database {
 		try{
 			String query = "INSERT INTO pallets (product_name, location, production_timestamp, blocked)" 
 					+ "VALUES (?, ?, ?, ?)";
-			stmt = conn.prepareStatement(query);
+			stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, cookieType);
 			stmt.setString(2, "Deep freeze storage");
 			stmt.setTimestamp(3, timeStamp);
 			stmt.setBoolean(4, false);
-			stmt.execute();
-			query = "SELECT * FROM pallets ORDER BY id DESC";
-			stmt = conn.prepareStatement(query);
-			rs = stmt.executeQuery();
+			rs = stmt.getGeneratedKeys();
 			if(rs.next()){
-				p = new Pallet(rs.getInt("id"), cookieType, "Deep freeze storage", timeStamp, false);
+				p = new Pallet(rs.getInt(1), cookieType, "Deep freeze storage", timeStamp, false);
 			}
-			query = "SELECT name, amount "
-					+ "FROM ingredients WHERE cookie_name = ?; ";
+			query = "CREATE VIEW ingredientamount AS "
+					+ "SELECT name as ingredientname, amount as ingredientam "
+					+ "FROM ingredients WHERE cookie_name = " + cookieType + "; "
+					+ "UPDATE storage set amount = amount - (SELECT ingredientam  "
+					+ "FROM ingredientamount"
+					+ "WHERE name = (SELECT ingredientname FROM ingredientamount)";
 			stmt =conn.prepareStatement(query);
-			stmt.setString(1, cookieType);
-			rs = stmt.executeQuery();
-			int dec = 0;
-			String name = "";
-			while (rs.next()) {
-				dec = rs.getInt("amount") * 54;
-				name = rs.getString("name");
-				query = "UPDATE storage SET amount = amount - ?" + " WHERE name = ?";
-				stmt = conn.prepareStatement(query);
-				stmt.setInt(1, dec);
-				stmt.setString(2, name);
-				stmt.executeUpdate();
-			}
+			stmt.executeQuery();
 		}catch(SQLException e){
 			e.printStackTrace();
 		} finally{

@@ -83,7 +83,7 @@ public class Database {
 			stmt.setString(2, "Deep freeze storage");
 			stmt.setTimestamp(3, timeStamp);
 			stmt.setBoolean(4, false);
-			stmt.execute();
+			stmt.executeQuery();
 			query = "SELECT * FROM pallets ORDER BY id DESC";
 			stmt = conn.prepareStatement(query);
 			rs = stmt.executeQuery();
