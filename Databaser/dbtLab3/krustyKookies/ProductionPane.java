@@ -31,18 +31,19 @@ public class ProductionPane extends BasicPane {
 	public JComponent createLeftPanel() {
 		cookieListModel = new DefaultListModel<String>();
 
-		cookieList = new JList<String>();
+		cookieList = new JList<String>(cookieListModel);
 		cookieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		cookieList.setPrototypeCellValue("123456789012");
 		cookieList.addListSelectionListener(new CookieSelectionListener());
 		JScrollPane p1 = new JScrollPane(cookieList);
 
 		JPanel p = new JPanel();
+		p.setLayout(new GridLayout(1, 1));
 		p.add(p1);
 		return p;
 	}
 	
-	public JComponent createRightPanel(){
+	public JComponent createMiddlePanel(){
 		String[] texts = new String[NBR_FIELDS];
 		texts[ID] = "ID";
 		texts[COOKIETYPE] = "Cookie-type";

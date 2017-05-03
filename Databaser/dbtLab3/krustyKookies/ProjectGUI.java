@@ -62,7 +62,7 @@ public class ProjectGUI {
                 
         /* --- change code here --- */
         /* --- change xxx to the name of the file with your database --- */
-        if (db.openConnection("KrustyKookies.db")) {
+        if (db.openConnection("Krusty.db")) {
             userLoginPane.displayMessage("Connected to database");
         } else {
             userLoginPane.displayMessage("Could not connect to database");

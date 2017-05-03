@@ -2,6 +2,7 @@ package krustyKookies;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -94,7 +95,7 @@ public class PalletSearchPane extends BasicPane {
 		return p;
 	}
 
-	public JComponent createRightPanel() {
+	public JComponent createMiddlePanel() {
 		String[] texts = new String[NBR_FIELDS];
 		texts[ID] = "ID";
 		texts[COOKIETYPE] = "Cookie-type";
@@ -135,7 +136,7 @@ public class PalletSearchPane extends BasicPane {
 		db.getCookies(cookieListModel);
 	}
 
-	private void fillIdList(String cookieType, java.sql.Date bDate, java.sql.Date eDate) {
+	private void fillIdList(String cookieType, Timestamp bDate, Timestamp eDate) {
 		idListModel.removeAllElements();
 		db.getIds(idListModel, cookieType, bDate, eDate);
 	}
@@ -158,20 +159,14 @@ public class PalletSearchPane extends BasicPane {
 				displayMessage("Must login first");
 				return;
 			}
-			String[] bDate = dateFields[BDATE].toString().split(" ");
-			String[] eDate = dateFields[EDATE].toString().split(" ");
-			if (bDate == null || bDate.length != 3 || eDate == null || eDate.length != 3) {
+			Timestamp bDate = Timestamp.valueOf(dateFields[BDATE].getText());
+			Timestamp eDate = Timestamp.valueOf(dateFields[EDATE].getText());
+			if(bDate == null || eDate == null){
 				return;
 			}
-			Date begDate = new GregorianCalendar(Integer.parseInt(bDate[0]) - 1900, Integer.parseInt(bDate[1]),
-					Integer.parseInt(bDate[2])).getTime();
-			Date endDate = new GregorianCalendar(Integer.parseInt(eDate[0]) - 1900, Integer.parseInt(eDate[1]),
-					Integer.parseInt(eDate[2])).getTime();
-			java.sql.Date startDate = new java.sql.Date(begDate.getTime());
-			java.sql.Date endingDate = new java.sql.Date(endDate.getTime());
 			String cookieType = cookieList.getSelectedValue();
 			/* --- insert own code here --- */
-			fillIdList(cookieType, startDate, endingDate);
+			fillIdList(cookieType, bDate, eDate);
 		}
 	}
 

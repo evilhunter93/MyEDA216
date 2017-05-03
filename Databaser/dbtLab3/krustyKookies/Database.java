@@ -76,22 +76,23 @@ public class Database {
 		// Convert it to java.sql.Date
 		Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 		try{
-			String query = "INSERT INTO Pallets (cookieType, location, date, blocked)" 
+			String query = "INSERT INTO pallets (product_name, location, production_timestamp, blocked)" 
 					+ "VALUES (?, ?, ?, ?)";
 			stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, cookieType);
 			stmt.setString(2, "Deep freeze storage");
 			stmt.setTimestamp(3, timeStamp);
 			stmt.setBoolean(4, false);
-			stmt.executeUpdate();
 			rs = stmt.getGeneratedKeys();
 			if(rs.next()){
-				p = new Pallet(rs.getInt("ID"), cookieType, "Deep freeze storage", timeStamp, false);
+				p = new Pallet(rs.getInt(1), cookieType, "Deep freeze storage", timeStamp, false);
 			}
-			query = "view ingredientamount "
-					+ "SELECT name as in, amount as ia FROM ingredients WHERE cookie_name = " + cookieType
-					+ "\n UPDATE storage set amount = amount - ia "
-					+ "WHERE name = in";
+			query = "CREATE VIEW ingredientamount AS "
+					+ "SELECT name as ingredientname, amount as ingredientam "
+					+ "FROM ingredients WHERE cookie_name = " + cookieType + "; "
+					+ "UPDATE storage set amount = amount - (SELECT ingredientam  "
+					+ "FROM ingredientamount"
+					+ "WHERE name = (SELECT ingredientname FROM ingredientamount)";
 			stmt =conn.prepareStatement(query);
 			stmt.executeQuery();
 		}catch(SQLException e){
@@ -109,13 +110,13 @@ public class Database {
 		Pallet p = null;
 		
 		try{
-			String query = "Select * FROM Pallets WHERE ID = ?";
+			String query = "Select * FROM Pallets WHERE id = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
 			if(rs.next()){
-				p = new Pallet(id, rs.getString("cookieType"), rs.getString("Location"), 
-						rs.getTimestamp("Timestamp"), rs.getBoolean("Blocked"));
+				p = new Pallet(id, rs.getString("production_name"), rs.getString("Location"), 
+						rs.getTimestamp("production_timestamp"), rs.getBoolean("Blocked"));
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -133,6 +134,7 @@ public class Database {
 			String query = "SELECT distinct name FROM recipes";
 			rs = stmt.executeQuery(query);
 			while (rs.next())
+				//System.out.print(rs.getString("name") +"\n");
 				list.addElement(rs.getString("name"));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -141,18 +143,20 @@ public class Database {
 		}
 	}
 	
-	public void getIds(DefaultListModel<Integer> list, String cookieType, Date bDate, Date eDate){
+	public void getIds(DefaultListModel<Integer> list, String cookieType, Timestamp bDate, Timestamp eDate){
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			String query = "SELECT distinct id FROM pallets WHERE cookieType = ? AND date > ? AND date < ?";
+			String query = "SELECT distinct id FROM pallets WHERE product_name = ? "
+					+ "AND production_timestamp < ? "
+					+ "AND production_timestamp > ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, cookieType);
-			stmt.setDate(2, bDate);
-			stmt.setDate(3, eDate);
-			rs = stmt.executeQuery(query);
+			stmt.setTimestamp(2, bDate);
+			stmt.setTimestamp(3, eDate);
+			rs = stmt.executeQuery();
 			while (rs.next())
-				list.addElement(rs.getInt("id"));
+				list.addElement(rs.getInt(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -165,12 +169,14 @@ public class Database {
 		ResultSet rs = null;
 		try {
 			String query = "UPDATE pallets set blocked = 1 "
-					+ "WHERE cookieType = ? AND date > ? AND date < ?";
+					+ "WHERE product_name = ? "
+					+ "AND production_timestamp > ? "
+					+ "AND production_timestamp < ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, cookieType);
 			stmt.setTimestamp(2, bDate);
 			stmt.setTimestamp(3, eDate);
-			stmt.executeUpdate(query);
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

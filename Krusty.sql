@@ -2,10 +2,17 @@ PRAGMA foreign_keys = off;
 
 DROP TABLE IF EXISTS customers;
 DROP TABLE IF EXISTS orders;
-DROP TABLE IF EXISTS receipts;
+DROP TABLE IF EXISTS recipes;
 DROP TABLE IF EXISTS pallets;
 DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS ingredients;
+DROP TABLE IF EXISTS storage;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+	name varchar(20),
+	primary key (name)
+);
 
 CREATE TABLE customers (
 	id varchar(20),
@@ -49,7 +56,7 @@ CREATE TABLE ingredients (
 	unit varchar(5),
 	amount integer check(amount > 0),
 	cookie_name varchar(20),
-	primary key(name),
+	primary key(name, cookie_name),
 	foreign key(cookie_name) references recipes(name)
 );
 
@@ -64,6 +71,9 @@ CREATE TABLE storage (
 
 BEGIN TRANSACTION;
 
+INSERT INTO users (name) VALUES
+('KOOL');
+
 INSERT INTO customers (id, address) VALUES
 ('Finkakor AB', 'Helsingborg'),
 ('Småbröd AB', 'Malmö'),
@@ -75,9 +85,9 @@ INSERT INTO customers (id, address) VALUES
 ('Skånekakor AB','Perstorp');
 
 INSERT INTO orders (amount, delivery_date, customer_id, product_name) VALUES
-(1, '2017-04-30', 'Finkakor AB', Berliner);
+(1, '2017-04-30', 'Finkakor AB', 'Berliner');
 
-INSERT INTO receipts (name) VALUES
+INSERT INTO recipes (name) VALUES
 ('Nut ring'),
 ('Nut cookie'),
 ('Amneris'),

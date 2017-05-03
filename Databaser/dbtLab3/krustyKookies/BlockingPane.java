@@ -1,6 +1,7 @@
 package krustyKookies;
 
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
@@ -76,19 +77,20 @@ public class BlockingPane extends BasicPane {
 	public JComponent createLeftPanel(){
 		cookieListModel = new DefaultListModel<String>();
 
-		cookieList = new JList<String>();
+		cookieList = new JList<String>(cookieListModel);
 		cookieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		cookieList.setPrototypeCellValue("123456789012");
 		cookieList.addListSelectionListener(new CookieSelectionListener());
 		JScrollPane p1 = new JScrollPane(cookieList);
 
 		JPanel p = new JPanel();
+		p.setLayout(new GridLayout(1, 1));
 		p.add(p1);
 		return p;
 	}
 	
 	public JComponent createBottomPanel(){
-		JButton[] buttons = new JButton[1];
+		JButton[] buttons = new JButton[2];
 		buttons[0] = new JButton("Block pallets");
 		buttons[1] = new JButton("Unblock pallets");
 		return new ButtonAndMessagePanel(buttons, messageLabel, new ActionHandler());
@@ -136,8 +138,8 @@ public class BlockingPane extends BasicPane {
 				displayMessage("Must login first");
 				return;
 			}
-			Timestamp bDate = Timestamp.valueOf(fields[BDATE].toString());
-			Timestamp eDate = Timestamp.valueOf(fields[EDATE].toString());
+			Timestamp bDate = Timestamp.valueOf(fields[BDATE].getText());
+			Timestamp eDate = Timestamp.valueOf(fields[EDATE].getText());
 			if(bDate == null || eDate == null){
 				return;
 			}
