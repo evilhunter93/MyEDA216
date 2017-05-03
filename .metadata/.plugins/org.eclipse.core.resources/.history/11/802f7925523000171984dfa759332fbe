@@ -126,7 +126,7 @@ public class Database {
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
 			if(rs.next()){
-				p = new Pallet(id, rs.getString("product_name"), rs.getString("Location"), 
+				p = new Pallet(id, rs.getString("production_name"), rs.getString("Location"), 
 						rs.getTimestamp("production_timestamp"), rs.getBoolean("Blocked"));
 			}
 		}catch(SQLException e){
@@ -159,8 +159,8 @@ public class Database {
 		ResultSet rs = null;
 		try {
 			String query = "SELECT id FROM pallets WHERE product_name = ? "
-					+ "AND production_timestamp > ? "
-					+ "AND production_timestamp < ?";
+					+ "AND production_timestamp < ? "
+					+ "AND production_timestamp > ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, cookieType);
 			stmt.setTimestamp(2, bDate);

@@ -126,7 +126,7 @@ public class Database {
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
 			if(rs.next()){
-				p = new Pallet(id, rs.getString("product_name"), rs.getString("Location"), 
+				p = new Pallet(id, rs.getString("production_name"), rs.getString("Location"), 
 						rs.getTimestamp("production_timestamp"), rs.getBoolean("Blocked"));
 			}
 		}catch(SQLException e){

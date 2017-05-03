@@ -102,7 +102,6 @@ public class PalletSearchPane extends BasicPane {
 		texts[COOKIETYPE] = "Cookie-type";
 		texts[LOCATION] = "Location";
 		texts[DATE] = "Production date";
-		texts[BLOCKED] = "Blocked";
 
 		fields = new JTextField[NBR_FIELDS];
 		for (int i = 0; i < fields.length; i++) {
@@ -188,7 +187,6 @@ public class PalletSearchPane extends BasicPane {
 			fields[1].setText(pallet.getCookieType());
 			fields[2].setText(pallet.getLocation());
 			fields[3].setText(pallet.getDate());
-			fields[4].setText(String.valueOf(pallet.getBlocked()));
 		}
 	}
 }

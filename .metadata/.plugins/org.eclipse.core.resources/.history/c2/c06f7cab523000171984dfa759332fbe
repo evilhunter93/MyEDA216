@@ -16,7 +16,6 @@ public class Pallet {
 		this.cookieType = cookieType;
 		this.location = location;
 		this.timeStamp = timeStamp;
-		this.blocked = blocked;
 	}
 
 	public int getID() {
