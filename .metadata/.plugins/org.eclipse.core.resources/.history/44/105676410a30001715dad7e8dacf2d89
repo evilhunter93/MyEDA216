@@ -2,20 +2,18 @@ package krustyKookies;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.sql.Timestamp;
 
 public class Pallet {
 	private int id;
 	private String cookieType;
 	private String location;
-	private Timestamp timeStamp;
-	private boolean blocked;
+	private Date date;
 	
-	public Pallet(int id, String cookieType, String location, Timestamp timeStamp, boolean blocked){
+	public Pallet(int id, String cookieType, String location, Date date){
 		this.id = id;
 		this.cookieType = cookieType;
 		this.location = location;
-		this.timeStamp = timeStamp;
+		this.date = date;
 	}
 
 	public int getID() {
@@ -32,10 +30,6 @@ public class Pallet {
 	}
 	public String getDate() {
 		// TODO Auto-generated method stub
-		return timeStamp.toString();
-	}
-	
-	public boolean getBlocked(){
-		return blocked;
+		return date.toString();
 	}
 }

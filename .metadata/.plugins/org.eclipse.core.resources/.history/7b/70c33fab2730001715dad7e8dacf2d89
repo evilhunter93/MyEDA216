@@ -136,9 +136,9 @@ public class BlockingPane extends BasicPane {
 				displayMessage("Must login first");
 				return;
 			}
-			Timestamp bDate = Timestamp.valueOf(fields[BDATE].toString());
-			Timestamp eDate = Timestamp.valueOf(fields[EDATE].toString());
-			if(bDate == null || eDate == null){
+			Timestamp bDate = fields[BDATE].toString().split("-");
+			Timestamp eDate = fields[EDATE].toString().split("-");
+			if(bDate == null || bDate.length != 3 || eDate == null || eDate.length !=3){
 				return;
 			}
 			String cookieType = cookieList.getSelectedValue();

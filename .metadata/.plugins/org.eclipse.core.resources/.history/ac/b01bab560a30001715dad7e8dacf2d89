@@ -74,26 +74,19 @@ public class Database {
 		ResultSet rs = null;
 		Pallet p = null;
 		// Convert it to java.sql.Date
-		Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+		Date date = new Date(System.currentTimeMillis());
 		try{
-			String query = "INSERT INTO Pallets (cookieType, location, date, blocked)" 
+			String query = "INSERT INTO Pallets (cookieType, location, date)" 
 					+ "VALUES (?, ?, ?, ?)";
 			stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, cookieType);
 			stmt.setString(2, "Deep freeze storage");
-			stmt.setTimestamp(3, timeStamp);
-			stmt.setBoolean(4, false);
+			stmt.setDate(3, date);
 			stmt.executeUpdate();
 			rs = stmt.getGeneratedKeys();
 			if(rs.next()){
-				p = new Pallet(rs.getInt("ID"), cookieType, "Deep freeze storage", timeStamp, false);
+				p = new Pallet(rs.getInt("ID"), cookieType, "Deep freeze storage", date);
 			}
-			query = "view ingredientamount "
-					+ "SELECT name as in, amount as ia FROM ingredients WHERE cookie_name = " + cookieType
-					+ "\n UPDATE storage set amount = amount - ia "
-					+ "WHERE name = in";
-			stmt =conn.prepareStatement(query);
-			stmt.executeQuery();
 		}catch(SQLException e){
 			e.printStackTrace();
 		} finally{
@@ -115,7 +108,7 @@ public class Database {
 			rs = stmt.executeQuery();
 			if(rs.next()){
 				p = new Pallet(id, rs.getString("cookieType"), rs.getString("Location"), 
-						rs.getTimestamp("Timestamp"), rs.getBoolean("Blocked"));
+						rs.getDate("Date"));
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -160,7 +153,7 @@ public class Database {
 		}
 	}
 	
-	public void blockPallets(String cookieType, Timestamp bDate, Timestamp eDate){
+	public void blockPallets(String cookieType, Date bDate, Date eDate){
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -168,8 +161,8 @@ public class Database {
 					+ "WHERE cookieType = ? AND date > ? AND date < ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, cookieType);
-			stmt.setTimestamp(2, bDate);
-			stmt.setTimestamp(3, eDate);
+			stmt.setDate(2, bDate);
+			stmt.setDate(3, eDate);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

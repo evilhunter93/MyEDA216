@@ -3,7 +3,6 @@ package krustyKookies;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -90,7 +89,6 @@ public class BlockingPane extends BasicPane {
 	public JComponent createBottomPanel(){
 		JButton[] buttons = new JButton[1];
 		buttons[0] = new JButton("Block pallets");
-		buttons[1] = new JButton("Unblock pallets");
 		return new ButtonAndMessagePanel(buttons, messageLabel, new ActionHandler());
 	}
 	
@@ -136,14 +134,20 @@ public class BlockingPane extends BasicPane {
 				displayMessage("Must login first");
 				return;
 			}
-			Timestamp bDate = Timestamp.valueOf(fields[BDATE].toString());
-			Timestamp eDate = Timestamp.valueOf(fields[EDATE].toString());
-			if(bDate == null || eDate == null){
+			String[] bDate = fields[BDATE].toString().split(" ");
+			String[] eDate = fields[EDATE].toString().split(" ");
+			if(bDate == null || bDate.length != 3 || eDate == null || eDate.length !=3){
 				return;
 			}
+			Date begDate = new GregorianCalendar(Integer.parseInt(bDate[0])-1900, Integer.parseInt(bDate[1]),
+					Integer.parseInt(bDate[2])).getTime();
+			Date endDate = new GregorianCalendar(Integer.parseInt(eDate[0])-1900, Integer.parseInt(eDate[1]),
+					Integer.parseInt(eDate[2])).getTime();
+			java.sql.Date startDate = new java.sql.Date(begDate.getTime());
+			java.sql.Date endingDate = new java.sql.Date(endDate.getTime());
 			String cookieType = cookieList.getSelectedValue();
 			/* --- insert own code here --- */
-			db.blockPallets(cookieType, bDate, eDate);
+			db.blockPallets(cookieType, startDate, endingDate);
 		}
 	}
 }

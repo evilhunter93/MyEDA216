@@ -21,10 +21,10 @@ CREATE TABLE orders (
 	product_name varchar(20),
 	primary key (id),
 	foreign key (customer_id) references customers(id),
-	foreign key (product_name) references receipts(name)
+	foreign key (product_name) references recipes(name)
 );
 
-CREATE TABLE receipts (
+CREATE TABLE recipes (
 	name varchar(20),
 	primary key (name)
 );
@@ -33,8 +33,8 @@ CREATE TABLE pallets (
 	id integer,
 	product_name varchar(20),
 	location varchar(20),
-	production_time time,
-	production_date date,
+	production_timestamp timestamp,
+	blocked boolean,
 	primary key (id),
 	foreign key (location) references locations(name)
 );
@@ -124,8 +124,8 @@ INSERT INTO locations(name) VALUES
 ('On the road'),
 ('N/A');
 
-INSERT INTO pallets(product_name, location, production_date, production_time) VALUES
-('Berliner', 'On the road', '2017-04-30', '14:30');
+INSERT INTO pallets(product_name, location, production_timestamp) VALUES
+('Berliner', 'On the road', '2017-04-30 14:30:22.0');
 
 INSERT INTO storage(name, unit, amount, last_date) VALUES
 ('Flour', 'g', 20000, '2017-04-30'),

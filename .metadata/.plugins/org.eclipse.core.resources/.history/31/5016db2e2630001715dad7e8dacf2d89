@@ -93,7 +93,6 @@ public class Database {
 					+ "\n UPDATE storage set amount = amount - ia "
 					+ "WHERE name = in";
 			stmt =conn.prepareStatement(query);
-			stmt.executeQuery();
 		}catch(SQLException e){
 			e.printStackTrace();
 		} finally{
@@ -160,7 +159,7 @@ public class Database {
 		}
 	}
 	
-	public void blockPallets(String cookieType, Timestamp bDate, Timestamp eDate){
+	public void blockPallets(String cookieType, Date bDate, Date eDate){
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -168,8 +167,8 @@ public class Database {
 					+ "WHERE cookieType = ? AND date > ? AND date < ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, cookieType);
-			stmt.setTimestamp(2, bDate);
-			stmt.setTimestamp(3, eDate);
+			stmt.setDate(2, bDate);
+			stmt.setDate(3, eDate);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -34,8 +34,4 @@ public class Pallet {
 		// TODO Auto-generated method stub
 		return timeStamp.toString();
 	}
-	
-	public boolean getBlocked(){
-		return blocked;
-	}
 }

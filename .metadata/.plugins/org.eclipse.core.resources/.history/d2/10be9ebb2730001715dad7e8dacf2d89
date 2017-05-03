@@ -138,7 +138,7 @@ public class BlockingPane extends BasicPane {
 			}
 			Timestamp bDate = Timestamp.valueOf(fields[BDATE].toString());
 			Timestamp eDate = Timestamp.valueOf(fields[EDATE].toString());
-			if(bDate == null || eDate == null){
+			if(bDate == null || bDate.length != 3 || eDate == null || eDate.length !=3){
 				return;
 			}
 			String cookieType = cookieList.getSelectedValue();
