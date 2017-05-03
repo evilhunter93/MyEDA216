@@ -50,7 +50,7 @@ CREATE TABLE ingredients (
 	amount integer check(amount > 0),
 	cookie_name varchar(20),
 	primary key(name),
-	foreign key(cookie_name) references receipts(name)
+	foreign key(cookie_name) references recipes(name)
 );
 
 CREATE TABLE storage (
