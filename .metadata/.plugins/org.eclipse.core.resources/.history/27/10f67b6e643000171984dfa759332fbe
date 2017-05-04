@@ -36,8 +36,7 @@ public class PalletSearchPane extends BasicPane {
 	private static final int LOCATION = 2;
 	private static final int DATE = 3;
 	private static final int BLOCKED = 4;
-	private static final int CUSTOMER_ID = 5;
-	private static final int NBR_FIELDS = 6;
+	private static final int NBR_FIELDS = 5;
 
 	private static final int BDATE = 0;
 	private static final int EDATE = 1;
