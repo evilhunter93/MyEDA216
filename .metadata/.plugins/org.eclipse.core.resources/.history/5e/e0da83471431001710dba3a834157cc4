@@ -32,7 +32,7 @@ public class ProjectGUI {
     public ProjectGUI(Database db) {
         this.db = db;
 
-        JFrame frame = new JFrame("Krusty Production");
+        JFrame frame = new JFrame("MovieBooking");
         tabbedPane = new JTabbedPane();
 
         UserLoginPane userLoginPane = new UserLoginPane(db);

@@ -10,8 +10,8 @@ DROP TABLE IF EXISTS storage;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-	name varchar(20),
-	primary key (name)
+	username varchar(20),
+	primary key (username)
 );
 
 CREATE TABLE customers (
@@ -44,6 +44,7 @@ CREATE TABLE pallets (
 	production_timestamp timestamp,
 	blocked boolean,
 	primary key (id),
+	foreign key (product_name) references recipes(name),
 	foreign key (location) references locations(name),
 	foreign key (orderId) references orders(id)
 );
@@ -67,13 +68,14 @@ CREATE TABLE storage (
 	unit varchar(5),
 	amount integer check(amount > 0),
 	last_date date,
+	last_amount integer check(last_amount > 0),
 	primary key(name),
 	foreign key(name) references ingredients(name)
 );
 
 BEGIN TRANSACTION;
 
-INSERT INTO users (name) VALUES
+INSERT INTO users (username) VALUES
 ('KOOL');
 
 INSERT INTO customers (id, address) VALUES
@@ -136,29 +138,29 @@ INSERT INTO locations(name) VALUES
 ('On the road'),
 ('N/A');
 
-INSERT INTO pallets(product_name, location, production_timestamp) VALUES
-('Berliner', 'On the road', '2017-04-30 14:30:22');
+INSERT INTO pallets(product_name, orderId, location, production_timestamp) VALUES
+('Berliner', 0,'On the road', '2017-04-30 14:30:22');
 
-INSERT INTO storage(name, unit, amount, last_date) VALUES
-('Flour', 'g', 20000, '2017-04-30'),
-('Butter', 'g', 20000, '2017-04-30'),
-('Icing sugar', 'g', 20000, '2017-04-30'),
-('Roasted, chopped nuts', 'g', 20000, '2017-04-30'),
-('Fine-ground nuts', 'g', 20000, '2017-04-30'),
-('Ground, roasted nuts', 'g', 20000, '2017-04-30'),
-('Bread crumbs', 'g', 20000, '2017-04-30'),
-('Sugar', 'g', 20000, '2017-04-30'),
-('Egg whites', 'dl', 20000, '2017-04-30'),
-('Chocolate', 'g', 20000, '2017-04-30'),
-('Marzipan', 'g', 20000, '2017-04-30'),
-('Eggs', 'g', 20000, '2017-04-30'),
-('Potato starch', 'g', 20000, '2017-04-30'),
-('Wheat flour', 'g', 20000, '2017-04-30'),
-('Sodium bicarbonate', 'g', 20000, '2017-04-30'),
-('Vanilla', 'g', 20000, '2017-04-30'),
-('Chopped almonds', 'g', 20000, '2017-04-30'),
-('Cinnamon', 'g', 20000, '2017-04-30'),
-('Vanilla sugar', 'g', 20000, '2017-04-30');
+INSERT INTO storage(name, unit, amount, last_date, last_amount) VALUES
+('Flour', 'g', 2000000, '2017-04-30', 2000000),
+('Butter', 'g', 2000000, '2017-04-30', 2000000),
+('Icing sugar', 'g', 2000000, '2017-04-30', 2000000),
+('Roasted, chopped nuts', 'g', 2000000, '2017-04-30', 2000000),
+('Fine-ground nuts', 'g', 2000000, '2017-04-30', 2000000),
+('Ground, roasted nuts', 'g', 2000000, '2017-04-30', 2000000),
+('Bread crumbs', 'g', 2000000, '2017-04-30', 2000000),
+('Sugar', 'g', 2000000, '2017-04-30', 2000000),
+('Egg whites', 'dl', 2000000, '2017-04-30', 2000000),
+('Chocolate', 'g', 2000000, '2017-04-30', 2000000),
+('Marzipan', 'g', 2000000, '2017-04-30', 2000000),
+('Eggs', 'g', 2000000, '2017-04-30', 2000000),
+('Potato starch', 'g', 2000000, '2017-04-30', 2000000),
+('Wheat flour', 'g', 2000000, '2017-04-30', 2000000),
+('Sodium bicarbonate', 'g', 2000000, '2017-04-30', 2000000),
+('Vanilla', 'g', 2000000, '2017-04-30', 2000000),
+('Chopped almonds', 'g', 2000000, '2017-04-30', 2000000),
+('Cinnamon', 'g', 2000000, '2017-04-30', 2000000),
+('Vanilla sugar', 'g', 2000000, '2017-04-30', 2000000);
 
 END TRANSACTION;
 

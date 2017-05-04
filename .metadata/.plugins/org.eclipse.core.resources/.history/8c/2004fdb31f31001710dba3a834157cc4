@@ -145,8 +145,6 @@ public class PalletSearchPane extends BasicPane {
 		clearMessage();
 		currentUser.setText(CurrentUser.instance().getCurrentUserId());
 		fillAltList();
-		cookieCustomerListModel.removeAllElements();
-		idListModel.removeAllElements();
 		clearFields();
 	}
 
