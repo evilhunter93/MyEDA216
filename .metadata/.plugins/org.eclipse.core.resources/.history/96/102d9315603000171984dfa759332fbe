@@ -6,7 +6,6 @@ import java.sql.Timestamp;
 
 public class Pallet {
 	private int id;
-	private int orderId;
 	private String cookieType;
 	private String location;
 	private Timestamp timeStamp;
@@ -18,19 +17,12 @@ public class Pallet {
 		this.location = location;
 		this.timeStamp = timeStamp;
 		this.blocked = blocked;
-		orderId = -1;
 	}
 
 	public int getID() {
 		// TODO Auto-generated method stub
 		return id;
 	}
-	
-	public int getOrderID() {
-		// TODO Auto-generated method stub
-		return orderId;
-	}
-	
 	public String getCookieType() {
 		// TODO Auto-generated method stub
 		return cookieType;

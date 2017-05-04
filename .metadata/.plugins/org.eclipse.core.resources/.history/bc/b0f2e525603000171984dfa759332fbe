@@ -25,12 +25,6 @@ public class Pallet {
 		// TODO Auto-generated method stub
 		return id;
 	}
-	
-	public int getOrderID() {
-		// TODO Auto-generated method stub
-		return orderId;
-	}
-	
 	public String getCookieType() {
 		// TODO Auto-generated method stub
 		return cookieType;

@@ -38,6 +38,7 @@ CREATE TABLE recipes (
 
 CREATE TABLE pallets (
 	id integer,
+	orderId integer,
 	product_name varchar(20),
 	location varchar(20),
 	production_timestamp timestamp,
@@ -134,8 +135,8 @@ INSERT INTO locations(name) VALUES
 ('On the road'),
 ('N/A');
 
-INSERT INTO pallets(product_name, location, production_timestamp) VALUES
-('Berliner', 'On the road', '2017-04-30 14:30:22');
+INSERT INTO pallets(product_name, orderId, location, production_timestamp) VALUES
+('Berliner', 0,'On the road', '2017-04-30 14:30:22');
 
 INSERT INTO storage(name, unit, amount, last_date) VALUES
 ('Flour', 'g', 2000000, '2017-04-30'),

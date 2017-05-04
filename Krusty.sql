@@ -38,12 +38,14 @@ CREATE TABLE recipes (
 
 CREATE TABLE pallets (
 	id integer,
+	orderId integer,
 	product_name varchar(20),
 	location varchar(20),
 	production_timestamp timestamp,
 	blocked boolean,
 	primary key (id),
-	foreign key (location) references locations(name)
+	foreign key (location) references locations(name),
+	foreign key (orderId) references orders(id)
 );
 
 CREATE TABLE locations (
