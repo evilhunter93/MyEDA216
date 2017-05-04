@@ -22,9 +22,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import krustyKookies.BookingPane.ActionHandler;
-import krustyKookies.ProductionPane.CookieSelectionListener;
-
 public class BlockingPane extends BasicPane {
 	private static final long serialVersionUID = 1;
 	private JLabel currentUser;

@@ -87,7 +87,7 @@ INSERT INTO customers (id, address) VALUES
 ('Skånekakor AB','Perstorp');
 
 INSERT INTO orders (amount, delivery_date, customer_id, product_name) VALUES
-(1, '2017-04-30', 'Finkakor AB', 'Berliner');
+(1, '2017-04-30 14:30:22', 'Finkakor AB', 'Berliner');
 
 INSERT INTO recipes (name) VALUES
 ('Nut ring'),
@@ -137,7 +137,7 @@ INSERT INTO locations(name) VALUES
 ('N/A');
 
 INSERT INTO pallets(product_name, location, production_timestamp) VALUES
-('Berliner', 'On the road', '2017-04-30 14:30:22.0');
+('Berliner', 'On the road', '2017-04-30 14:30:22');
 
 INSERT INTO storage(name, unit, amount, last_date) VALUES
 ('Flour', 'g', 20000, '2017-04-30'),

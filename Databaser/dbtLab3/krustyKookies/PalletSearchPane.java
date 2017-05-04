@@ -2,12 +2,15 @@ package krustyKookies;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -18,16 +21,18 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import krustyKookies.BookingPane.DateSelectionListener;
-import krustyKookies.BookingPane.NameSelectionListener;
+import krustyKookies.ProductionPane.ActionHandler;
 
 public class PalletSearchPane extends BasicPane {
 	private static final long serialVersionUID = 1;
 	private JLabel currentUser;
-	private DefaultListModel<String> cookieListModel;
-	private JList<String> cookieList;
+	private DefaultListModel<String> cookieCustomerListModel;
+	private JList<String> cookieCustomerList;
 	private DefaultListModel<Integer> idListModel;
 	private JList<Integer> idList;
+	private DefaultListModel<String> altListModel;
+	private JList<String> altList;
+	
 	private JTextField[] fields;
 	private JTextField[] dateFields;
 
@@ -48,13 +53,21 @@ public class PalletSearchPane extends BasicPane {
 	}
 
 	public JComponent createLeftPanel() {
-		cookieListModel = new DefaultListModel<String>();
+		altListModel = new DefaultListModel<String>();
 
-		cookieList = new JList<String>(cookieListModel);
-		cookieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		cookieList.setPrototypeCellValue("123456789012");
-		cookieList.addListSelectionListener(new CookieSelectionListener());
-		JScrollPane p1 = new JScrollPane(cookieList);
+		altList = new JList<String>(altListModel);
+		altList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		altList.setPrototypeCellValue("123456789012");
+		altList.addListSelectionListener(new AltSelectionListener());
+		JScrollPane p1 = new JScrollPane(altList);
+		
+		cookieCustomerListModel = new DefaultListModel<String>();
+
+		cookieCustomerList = new JList<String>(cookieCustomerListModel);
+		cookieCustomerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cookieCustomerList.setPrototypeCellValue("123456789012");
+		cookieCustomerList.addListSelectionListener(new CookieSelectionListener());
+		JScrollPane p2 = new JScrollPane(cookieCustomerList);
 
 		idListModel = new DefaultListModel<Integer>();
 
@@ -62,12 +75,13 @@ public class PalletSearchPane extends BasicPane {
 		idList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		idList.setPrototypeCellValue(123456);
 		idList.addListSelectionListener(new IdSelectionListener());
-		JScrollPane p2 = new JScrollPane(idList);
+		JScrollPane p3 = new JScrollPane(idList);
 
 		JPanel p = new JPanel();
-		p.setLayout(new GridLayout(1, 2));
+		p.setLayout(new GridLayout(1, 3));
 		p.add(p1);
 		p.add(p2);
+		p.add(p3);
 		return p;
 	}
 
@@ -104,6 +118,7 @@ public class PalletSearchPane extends BasicPane {
 		texts[LOCATION] = "Location";
 		texts[DATE] = "Production date";
 		texts[BLOCKED] = "Blocked";
+		texts[CUSTOMER_ID] = "Customer id";
 
 		fields = new JTextField[NBR_FIELDS];
 		for (int i = 0; i < fields.length; i++) {
@@ -129,19 +144,35 @@ public class PalletSearchPane extends BasicPane {
 	public void entryActions() {
 		clearMessage();
 		currentUser.setText(CurrentUser.instance().getCurrentUserId());
-		fillCookieList();
+		fillAltList();
 		clearFields();
 	}
 
+	private void fillAltList() {
+		altListModel.removeAllElements();
+		altListModel.addElement("Cookie");
+		altListModel.addElement("Customer");
+	}
+
 	private void fillCookieList() {
-		cookieListModel.removeAllElements();
+		cookieCustomerListModel.removeAllElements();
 		/* --- insert own code here --- */
-		db.getCookies(cookieListModel);
+		db.getCookies(cookieCustomerListModel);
+	}
+	
+	private void fillCustomerList(){
+		cookieCustomerListModel.removeAllElements();
+		db.getCustomers(cookieCustomerListModel);
 	}
 
 	private void fillIdList(String cookieType, Timestamp bDate, Timestamp eDate) {
 		idListModel.removeAllElements();
 		db.getIds(idListModel, cookieType, bDate, eDate);
+	}
+	
+	private void fillIdList(String customerId) {
+		idListModel.removeAllElements();
+		db.getIds(idListModel, customerId);
 	}
 
 	private void clearFields() {
@@ -152,25 +183,48 @@ public class PalletSearchPane extends BasicPane {
 			dateFields[i].setText("");
 		}
 	}
-
-	class CookieSelectionListener implements ListSelectionListener {
+	
+	class AltSelectionListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
-			if (cookieList.isSelectionEmpty()) {
+			if (altList.isSelectionEmpty()) {
 				return;
 			}
 			if (!CurrentUser.instance().isLoggedIn()) {
 				displayMessage("Must login first");
 				return;
 			}
+			String choice = altList.getSelectedValue();
+			if(choice == "Cookie")
+				fillCookieList();
+			/* --- insert own code here --- */
+			else if(choice == "Customer")
+				fillCustomerList();
+		}
+	}
+
+	class CookieSelectionListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			if (cookieCustomerList.isSelectionEmpty()) {
+				return;
+			}
+			if (!CurrentUser.instance().isLoggedIn()) {
+				displayMessage("Must login first");
+				return;
+			}
+			if(altList.getSelectedValue() == "Cookie"){
 			Timestamp bDate = Timestamp.valueOf(dateFields[BDATE].getText());
 			Timestamp eDate = Timestamp.valueOf(dateFields[EDATE].getText());
 			if(bDate == null || eDate == null){
 				return;
 			}
-			String cookieType = cookieList.getSelectedValue();
+			String cookieType = cookieCustomerList.getSelectedValue();
 			/* --- insert own code here --- */
-			System.out.println(cookieType + "MU");
+			System.out.println(cookieType);
 			fillIdList(cookieType, bDate, eDate);
+			} else if(altList.getSelectedValue() == "Customer"){
+				String customerId = cookieCustomerList.getSelectedValue();
+				fillIdList(customerId);
+			}
 		}
 	}
 
@@ -190,6 +244,7 @@ public class PalletSearchPane extends BasicPane {
 			fields[2].setText(pallet.getLocation());
 			fields[3].setText(pallet.getDate());
 			fields[4].setText(String.valueOf(pallet.getBlocked()));
+			fields[5].setText(db.getCustomerName(pallet.getOrderID()));
 		}
 	}
 }

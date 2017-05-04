@@ -1,0 +1,251 @@
+package krustyKookies;
+
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import krustyKookies.BookingPane.DateSelectionListener;
+import krustyKookies.BookingPane.NameSelectionListener;
+import krustyKookies.ProductionPane.ActionHandler;
+
+public class PalletSearchPane extends BasicPane {
+	private static final long serialVersionUID = 1;
+	private JLabel currentUser;
+	private DefaultListModel<String> cookieCustomerListModel;
+	private JList<String> cookieCustomerList;
+	private DefaultListModel<Integer> idListModel;
+	private JList<Integer> idList;
+	private DefaultListModel<String> altListModel;
+	private JList<String> altList;
+	
+	private JTextField[] fields;
+	private JTextField[] dateFields;
+
+	private static final int ID = 0;
+	private static final int COOKIETYPE = 1;
+	private static final int LOCATION = 2;
+	private static final int DATE = 3;
+	private static final int BLOCKED = 4;
+	private static final int CUSTOMER_ID = 5;
+	private static final int NBR_FIELDS = 6;
+
+	private static final int BDATE = 0;
+	private static final int EDATE = 1;
+	private static final int DATE_NBR_FIELDS = 2;
+
+	public PalletSearchPane(Database db) {
+		super(db);
+	}
+
+	public JComponent createLeftPanel() {
+		altListModel = new DefaultListModel<String>();
+
+		altList = new JList<String>(altListModel);
+		altList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		altList.setPrototypeCellValue("123456789012");
+		altList.addListSelectionListener(new AltSelectionListener());
+		JScrollPane p1 = new JScrollPane(altList);
+		
+		cookieCustomerListModel = new DefaultListModel<String>();
+
+		cookieCustomerList = new JList<String>(cookieCustomerListModel);
+		cookieCustomerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cookieCustomerList.setPrototypeCellValue("123456789012");
+		cookieCustomerList.addListSelectionListener(new CookieSelectionListener());
+		JScrollPane p2 = new JScrollPane(cookieCustomerList);
+
+		idListModel = new DefaultListModel<Integer>();
+
+		idList = new JList<Integer>(idListModel);
+		idList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		idList.setPrototypeCellValue(123456);
+		idList.addListSelectionListener(new IdSelectionListener());
+		JScrollPane p3 = new JScrollPane(idList);
+
+		JPanel p = new JPanel();
+		p.setLayout(new GridLayout(1, 3));
+		p.add(p1);
+		p.add(p2);
+		return p;
+	}
+
+	public JComponent createTopPanel() {
+		String[] texts = new String[DATE_NBR_FIELDS];
+		texts[BDATE] = "Starting date";
+		texts[EDATE] = "Ending date";
+
+		dateFields = new JTextField[DATE_NBR_FIELDS];
+		for (int i = 0; i < dateFields.length; i++) {
+			dateFields[i] = new JTextField(20);
+			dateFields[i].setEditable(true);
+		}
+
+		JPanel input = new InputPanel(texts, dateFields);
+
+		JPanel p1 = new JPanel();
+		p1.setLayout(new FlowLayout(FlowLayout.LEFT));
+		p1.add(new JLabel("Current user: "));
+		currentUser = new JLabel("");
+		p1.add(currentUser);
+
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.add(p1);
+		p.add(input);
+		return p;
+	}
+
+	public JComponent createMiddlePanel() {
+		String[] texts = new String[NBR_FIELDS];
+		texts[ID] = "ID";
+		texts[COOKIETYPE] = "Cookie-type";
+		texts[LOCATION] = "Location";
+		texts[DATE] = "Production date";
+		texts[BLOCKED] = "Blocked";
+		texts[CUSTOMER_ID] = "Customer id";
+
+		fields = new JTextField[NBR_FIELDS];
+		for (int i = 0; i < fields.length; i++) {
+			fields[i] = new JTextField(20);
+			fields[i].setEditable(false);
+		}
+
+		JPanel input = new InputPanel(texts, fields);
+
+		JPanel p1 = new JPanel();
+		p1.setLayout(new FlowLayout(FlowLayout.LEFT));
+		p1.add(new JLabel("Current user: "));
+		currentUser = new JLabel("");
+		p1.add(currentUser);
+
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.add(p1);
+		p.add(input);
+		return p;
+	}
+
+	public void entryActions() {
+		clearMessage();
+		currentUser.setText(CurrentUser.instance().getCurrentUserId());
+		fillAltList();
+		clearFields();
+	}
+
+	private void fillAltList() {
+		altListModel.removeAllElements();
+		altListModel.addElement("Cookie");
+		altListModel.addElement("Customer");
+	}
+
+	private void fillCookieList() {
+		cookieCustomerListModel.removeAllElements();
+		/* --- insert own code here --- */
+		db.getCookies(cookieCustomerListModel);
+	}
+	
+	private void fillCustomerList(){
+		cookieCustomerListModel.removeAllElements();
+		db.getCustomers(cookieCustomerListModel);
+	}
+
+	private void fillIdList(String cookieType, Timestamp bDate, Timestamp eDate) {
+		idListModel.removeAllElements();
+		db.getIds(idListModel, cookieType, bDate, eDate);
+	}
+	
+	private void fillIdList(String customerId) {
+		idListModel.removeAllElements();
+		db.getIds(idListModel, customerId);
+	}
+
+	private void clearFields() {
+		for (int i = 0; i < fields.length; i++) {
+			fields[i].setText("");
+		}
+		for (int i = 0; i < dateFields.length; i++) {
+			dateFields[i].setText("");
+		}
+	}
+	
+	class AltSelectionListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			if (altList.isSelectionEmpty()) {
+				return;
+			}
+			if (!CurrentUser.instance().isLoggedIn()) {
+				displayMessage("Must login first");
+				return;
+			}
+			String choice = altList.getSelectedValue();
+			if(choice == "Cookie")
+				fillCookieList();
+			/* --- insert own code here --- */
+			else if(choice == "Customer")
+				fillCustomerList();
+		}
+	}
+
+	class CookieSelectionListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			if (cookieCustomerList.isSelectionEmpty()) {
+				return;
+			}
+			if (!CurrentUser.instance().isLoggedIn()) {
+				displayMessage("Must login first");
+				return;
+			}
+			if(altList.getSelectedValue() == "Cookie"){
+			Timestamp bDate = Timestamp.valueOf(dateFields[BDATE].getText());
+			Timestamp eDate = Timestamp.valueOf(dateFields[EDATE].getText());
+			if(bDate == null || eDate == null){
+				return;
+			}
+			String cookieType = cookieCustomerList.getSelectedValue();
+			/* --- insert own code here --- */
+			System.out.println(cookieType);
+			fillIdList(cookieType, bDate, eDate);
+			} else if(altList.getSelectedValue() == "Customer"){
+				String customerId = cookieCustomerList.getSelectedValue();
+				
+			}
+		}
+	}
+
+	class IdSelectionListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e){
+			if(idList.isSelectionEmpty()){
+				return;
+			}
+			if (!CurrentUser.instance().isLoggedIn()) {
+				displayMessage("Must login first");
+				return;
+			}
+			int id = idList.getSelectedValue();
+			Pallet pallet = db.getPallet(id);
+			fields[0].setText(Integer.toString(pallet.getID()));
+			fields[1].setText(pallet.getCookieType());
+			fields[2].setText(pallet.getLocation());
+			fields[3].setText(pallet.getDate());
+			fields[4].setText(String.valueOf(pallet.getBlocked()));
+			fields[5].setText(db.getCustomerName(pallet.getOrderID()));
+		}
+	}
+}

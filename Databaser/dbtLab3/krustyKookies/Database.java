@@ -9,7 +9,7 @@ import javax.swing.DefaultListModel;
 public class Database {
 
 	private Connection conn;
-	
+
 	public boolean openConnection(String filename) {
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -45,7 +45,7 @@ public class Database {
 	public boolean isConnected() {
 		return conn != null;
 	}
-	
+
 	public boolean login(String uid) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -68,15 +68,15 @@ public class Database {
 		return false;
 
 	}
-	
-	public Pallet producePallet(String cookieType){
+
+	public Pallet producePallet(String cookieType) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Pallet p = null;
 		// Convert it to java.sql.Date
 		Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-		try{
-			String query = "INSERT INTO pallets (product_name, location, production_timestamp, blocked)" 
+		try {
+			String query = "INSERT INTO pallets (product_name, location, production_timestamp, blocked)"
 					+ "VALUES (?, ?, ?, ?)";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, cookieType);
@@ -87,12 +87,11 @@ public class Database {
 			query = "SELECT * FROM pallets ORDER BY id DESC";
 			stmt = conn.prepareStatement(query);
 			rs = stmt.executeQuery();
-			if(rs.next()){
+			if (rs.next()) {
 				p = new Pallet(rs.getInt("id"), cookieType, "Deep freeze storage", timeStamp, false);
 			}
-			query = "SELECT name, amount "
-					+ "FROM ingredients WHERE cookie_name = ?; ";
-			stmt =conn.prepareStatement(query);
+			query = "SELECT name, amount " + "FROM ingredients WHERE cookie_name = ?; ";
+			stmt = conn.prepareStatement(query);
 			stmt.setString(1, cookieType);
 			rs = stmt.executeQuery();
 			int dec = 0;
@@ -106,38 +105,38 @@ public class Database {
 				stmt.setString(2, name);
 				stmt.executeUpdate();
 			}
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally{
+		} finally {
 			closeStatement(stmt);
 		}
-		
+
 		return p;
 	}
-	
-	public Pallet getPallet(int id){
+
+	public Pallet getPallet(int id) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Pallet p = null;
-		
-		try{
+
+		try {
 			String query = "Select * FROM Pallets WHERE id = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
-			if(rs.next()){
-				p = new Pallet(id, rs.getString("product_name"), rs.getString("Location"), 
+			if (rs.next()) {
+				p = new Pallet(id, rs.getString("product_name"), rs.getString("Location"),
 						rs.getTimestamp("production_timestamp"), rs.getBoolean("Blocked"));
 			}
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally{
+		} finally {
 			closeStatement(stmt);
 		}
 		return p;
 	}
-	
-	public void getCookies(DefaultListModel<String> list){
+
+	public void getCookies(DefaultListModel<String> list) {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -145,7 +144,7 @@ public class Database {
 			String query = "SELECT distinct name FROM recipes";
 			rs = stmt.executeQuery(query);
 			while (rs.next())
-				//System.out.print(rs.getString("name") +"\n");
+				// System.out.print(rs.getString("name") +"\n");
 				list.addElement(rs.getString("name"));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -153,13 +152,12 @@ public class Database {
 			closeStatement(stmt);
 		}
 	}
-	
-	public void getIds(DefaultListModel<Integer> list, String cookieType, Timestamp bDate, Timestamp eDate){
+
+	public void getIds(DefaultListModel<Integer> list, String cookieType, Timestamp bDate, Timestamp eDate) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			String query = "SELECT id FROM pallets WHERE product_name = ? "
-					+ "AND production_timestamp > ? "
+			String query = "SELECT id FROM pallets WHERE product_name = ? " + "AND production_timestamp > ? "
 					+ "AND production_timestamp < ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, cookieType);
@@ -174,15 +172,13 @@ public class Database {
 			closeStatement(stmt);
 		}
 	}
-	
-	public void blockPallets(String cookieType, Timestamp bDate, Timestamp eDate){
+
+	public void blockPallets(String cookieType, Timestamp bDate, Timestamp eDate) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			String query = "UPDATE pallets set blocked = 1 "
-					+ "WHERE product_name = ? "
-					+ "AND production_timestamp > ? "
-					+ "AND production_timestamp < ?";
+			String query = "UPDATE pallets set blocked = 1 " + "WHERE product_name = ? "
+					+ "AND production_timestamp > ? " + "AND production_timestamp < ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, cookieType);
 			stmt.setTimestamp(2, bDate);
@@ -194,12 +190,12 @@ public class Database {
 			closeStatement(stmt);
 		}
 	}
-	
+
 	private ResultSet executeQuery(Statement stmt, String query) throws SQLException {
 		stmt = conn.createStatement();
 		return stmt.executeQuery(query);
 	}
-	
+
 	private void closeStatement(Statement stmt) {
 		if (stmt != null)
 			try {
@@ -208,5 +204,70 @@ public class Database {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+	}
+
+	public String getCustomerName(int orderID) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String customerName = null;
+		try {
+			String query = "SELECT customer_id FROM orders WHERE id = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, orderID);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				customerName = rs.getString("customer_id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeStatement(stmt);
+		}
+		if (customerName == null)
+			customerName = "None";
+		return customerName;
+	}
+
+	public void getIds(DefaultListModel<Integer> idListModel, String customerId) {
+		int[] orderId = new int[100];
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		try {
+			String query = "Select distinct id FROM orders WHERE customer_id = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, customerId);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				query = "SELECT id FROM pallets WHERE orderId = ?";
+				stmt = conn.prepareStatement(query);
+				stmt.setInt(1, rs.getInt("id"));
+				rs2 = stmt.executeQuery();
+				while (rs2.next()) {
+					idListModel.addElement(rs2.getInt("id"));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeStatement(stmt);
+		}
+	}
+
+	public void getCustomers(DefaultListModel<String> list) {
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.createStatement();
+			String query = "SELECT id FROM customers";
+			rs = stmt.executeQuery(query);
+			while (rs.next())
+				// System.out.print(rs.getString("name") +"\n");
+				list.addElement(rs.getString("id"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeStatement(stmt);
+		}
 	}
 }

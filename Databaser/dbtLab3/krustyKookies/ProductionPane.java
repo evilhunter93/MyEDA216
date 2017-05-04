@@ -3,9 +3,6 @@ package krustyKookies;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import krustyKookies.BookingPane.ActionHandler;
-import krustyKookies.BookingPane.NameSelectionListener;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Field;
