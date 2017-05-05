@@ -134,7 +134,7 @@ Programs:
 E/R diagram
 ===========
 
-![Diagram of database](DatabasUML.png)
+![UML](UML.jpg)
 
 Relations
 =========
