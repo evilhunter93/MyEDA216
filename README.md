@@ -148,7 +148,7 @@ Relations
     primary(name),\
     foreign(name) references ingredients(name)
 
-    -   FD1: name &rarr unit, amount, last\_date, last\_amount\
+    -   FD1: name &rarr; unit, amount, last\_date, last\_amount\
         One FD: BCNF
 
 -   recipes(name)\
@@ -160,7 +160,7 @@ Relations
     primary(name, cookie\_name)\
     foreign(cookie\_name references recipes(name)
 
-    -   FD1:name, cookie\_name &rarr amount, unit\
+    -   FD1:name, cookie\_name &rarr; amount, unit\
         Only one FD, relation in BCNF
 
 -   orders(id, amount, delivery\_date, customer\_id, product\_name)\
@@ -168,7 +168,7 @@ Relations
     foreign(customer\_id references customers(id))\
     foreign(product\_name) references recipes(name)
 
-    -   FD1:id &rarr amount, delivery\_date, customer\_id,
+    -   FD1:id &rarr; amount, delivery\_date, customer\_id,
         product\_name\
         Only one FD, relation in BCNF
 
@@ -179,10 +179,10 @@ Relations
     foreign(location) references locations(name),\
     foreign(orderId) references orders(id)
 
-    -   FD1:id &rarr orderId, product\_name, location,
+    -   FD1:id &rarr; orderId, product\_name, location,
         production\_timestamp, blocked
 
-    -   FD2: production\_timestamp, product\_name &rarr blocked\
+    -   FD2: production\_timestamp, product\_name &rarr; blocked\
         \
         blocked is not a superkey of id, meaning that the relation is
         not in BCNF. However, this is deemed fine since FD2 is only
